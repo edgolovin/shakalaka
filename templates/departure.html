@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<main class="container mt-3">
+
+    <h1 class="display-5 mt-4">Летим {{ data.departures[departure] }}</h1>
+    {% set tours_prices = [] %}
+    {% set tours_nights = [] %}
+    {% for id in data.tours_by_departure[departure] %}
+    {% set _ = tours_prices.append(data.tours[id]['price']) %}
+    {% set _ = tours_nights.append(data.tours[id]['nights']) %}
+    {% endfor %}
+    <p class="mb-4">Найдено {{ data.tours_by_departure[departure]|length }} туров, от {{ tours_prices|min }} до
+        {{ tours_prices|max }} и от {{ tours_nights|min }} ночей до {{ tours_nights|max }} ночей</p>
+    <!-- CARDS -->
+    <div class="row mt-5">
+        {% for id in data.tours_by_departure[departure] %}
+        {% set t = data.tours[id] %}
+        {% include 'tour_card.html' %}
+        {% endfor %}
+    </div>
+</main>
+
+{% endblock %}
